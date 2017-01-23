@@ -2,6 +2,69 @@
 
 defined('DIR_ROOT') or die('Forbidden.');
 
+if (!function_exists('https')){
+	/**
+	 * Is HTTPS?
+	 *
+	 * Determines if the application is accessed via an encrypted
+	 * (HTTPS) connection.
+	 *
+	 * @return	bool
+	 */
+	function https(){
+		if ( ! empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off'){
+			return TRUE;
+		} else if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https') {
+			return TRUE;
+		} else if ( ! empty($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) !== 'off') {
+			return TRUE;
+		}
+		return FALSE;
+	}
+}
+
+
+if (!function_exists('config_loader')){
+	/**
+	 * Loads the main config file
+	 *
+	 * This function lets us grab the config file even if the Config class
+	 * hasn't been instantiated yet
+	 *
+	 * @param	array
+	 * @return	array
+	 */
+	function &config_loader(Array $replace = array()){
+		static $config;
+
+		if (empty($config)){
+			$configPath = DIR_PUBLIC.'config/main.php';
+			$found = FALSE;
+			if (file_exists($configPath)){
+				$found = TRUE;
+				require $configPath;
+			}
+
+			if (!$found){
+				error('The configuration file does not exist.');
+			}
+
+			// Does the $config array exist in the file?
+			if (!isset($config) || !is_array($config)){
+				error('Your config file does not appear to be formatted correctly.');
+			}
+		}
+
+		// Are any values being dynamically added or replaced?
+		foreach ($replace as $key => $val){
+			$config[$key] = $val;
+		}
+
+		return $config;
+	}
+}
+
+
 if(!function_exists('instance')){
 	
 	function &instance(){
@@ -10,19 +73,6 @@ if(!function_exists('instance')){
 
 }
 
-if(!function_exists('config_loader')){
-
-	function config_loader($conf){
-		$configPath = DIR_PUBLIC . 'config' . DIRECTORY_SEPARATOR . strtolower($conf) . '.php';
-		if(file_exists($configPath)) {
-			require $configPath;
-			return $config[strtolower($conf)];
-		} else {
-			error('Unable to load the requested file : ' . $configPath);
-		}
-	}
-	
-}
 
 if(!function_exists('error')){
 
@@ -36,9 +86,9 @@ if(!function_exists('error')){
 
 }
 
-if(!function_exists('Autoloader')){
+if(!function_exists('autoloader')){
 
-	function Autoloader($class_paths = NULL, $use_base_dir = true){
+	function autoloader($class_paths = NULL, $use_base_dir = true){
 		static $is_init = false;
 
 		static $conf = [

@@ -1,7 +1,7 @@
 <?php
 defined('DIR_ROOT') or die('Forbidden.');
 
-class Router {
+class Router extends Config {
 
 	private $segment = array();
     private $controller;
@@ -9,30 +9,28 @@ class Router {
     private $var = array();
 
 	public function __construct(){
-		$this->segment = URI::Segment(array('array' => true)); 
-		$this->config['routes'] = config_loader('routes');
+		$this->load(array('routes'));
+		$this->segment = URI::segment(array('array' => true)); 	
 	}
 
 	private function set_controller(){
 		if(!isset($this->segment[1]) || empty($this->segment[1])){
-			if(empty($this->config['routes']['controller'])){
+			if(empty($this->item('routes','controller'))){
 				error('Unable to determine what should be displayed. A default route of controller has not been specified in the routing file. Please configure this file ' . DIR_PUBLIC . 'config/routes.php');
 			}
-			$this->segment[1] = $this->config['routes']['controller'];
+			$this->segment[1] = $this->item('routes','controller');
 		}
-
-	//	new Controller();
-			
+				
 		$this->class = ucfirst($this->segment[1]);
 		$this->controller = new $this->class();
 	}
 
 	private function set_method(){
         if(!isset($this->segment[2]) || empty($this->segment[2])){
-            if(empty($this->config['routes']['function'])){
+            if(empty($this->item('routes','function'))){
 				error('Unable to determine what should be displayed. A default route of function has not been specified in the routing file. Please configure this file ' . DIR_PUBLIC . 'config/routes.php');
 			}
-			$this->segment[2] = $this->config['routes']['function'];
+			$this->segment[2] = $this->item('routes','function');
         }
 
         $this->method = $this->segment[2];

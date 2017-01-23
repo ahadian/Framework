@@ -1,16 +1,12 @@
 <?php
-defined('DIR_ROOT') or die('Forbidden.');
 
 require DIR_SYSTEM . 'core/Common.php';
 
-$config['main'] = config_loader('main');
-// set config settings
-Autoloader(array(
+autoloader(array(
     [
-      'basepath' => $config['main']['basepath'],
+      'basepath' => DIR_ROOT,
       'verbose' => false
     ],
-
     'public/controllers',
     'public/models',
     'public/libraries',
@@ -18,6 +14,7 @@ Autoloader(array(
     'system/libraries',
     'system/database'  
 ));
+
 
 
 $router = new Router();

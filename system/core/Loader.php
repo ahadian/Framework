@@ -1,5 +1,4 @@
 <?php
-
 defined('DIR_ROOT') or die('Forbidden.');
 
 class Loader {
@@ -12,7 +11,7 @@ class Loader {
 
 	public function library($library, $name = ''){
 		$libName = strtolower($library);
-		$class 	   = ucfirst($library);
+		$class 	 = ucfirst($library);
 		if($name){
 			$libName = strtolower($name);
 			$class     = ucfirst($library);
@@ -32,11 +31,12 @@ class Loader {
 		return $this->instance->{$modelName} = new $class();
 	}
 
+	
 	public function view($view, $data = Array()){
 		$viewPath = DIR_PUBLIC . 'views/' . $view . '.php';
 	
 		if(!file_exists($viewPath)){
-			error('Unable to load the requested file : ' . $viewPath);
+			error('Unable to load the requested file : ' . $viewPath, 'An Error Was Encountered');
 		}
 	
 		if($data){

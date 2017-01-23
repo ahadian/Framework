@@ -1,17 +1,23 @@
 <?php
-defined('DIR_ROOT') or die('Forbidden.');
+//defined('DIR_ROOT') or die('Forbidden.');
 
-class Database {
+class Database extends Config {
 	public $flag = MYSQLI_ASSOC;
 
 	public function __construct(){
-		$this->config['database'] = config_loader('database');
-
-		$this->connection($this->config['database']);
+		$this->load(array('database'));
 	}
 
-	private function connection($config = array()){
-		$this->connection = mysqli_connect($config['hostname'], $config['username'], $config['password'], $config['database']) or error(mysqli_connect_error(), 'Error open connection', true);
+	public function connection($hostname = false, $username = false, $password = false, $database = false){
+		
+		if(!$hostname && !$username && !$password && !$database){
+			$hostname = $this->item('database', 'hostname');
+			$username = $this->item('database', 'username');
+			$password = $this->item('database', 'password');
+			$database = $this->item('database', 'database');
+		}
+
+		$this->connection = mysqli_connect($hostname, $username, $password, $database) or error(mysqli_connect_error(), 'Error open connection', true);
 	}
 
 	public function real_escape($data){
@@ -58,7 +64,7 @@ class Database {
 	public function set_charset($charset = false){
         if (isset($this->connection) && !(empty($this->connection))) {
         	if(!$charset){
-        		$charset = $this->config['database']['charset'];
+        		$charset = $this['database']['charset'];
         	}
             return mysqli_set_charset($this->connection, $charset) or error(mysqli_error($this->connection), 'Error set charset'.$charset, true);
         }

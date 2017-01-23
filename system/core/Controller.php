@@ -1,9 +1,10 @@
 <?php
+
 defined('DIR_ROOT') or die('Forbidden.');
 
 class Controller {
 
-	protected $load;
+	public $load;
   	private static $instance;
 
 	function __construct(){
