@@ -32,4 +32,7 @@ if(is_dir(DIR_ROOT . 'system')){
 	exit(3);
 }
 
+/*
+| Here we go
+*/
 require DIR_SYSTEM . 'core/PrivCode.php';
