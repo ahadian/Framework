@@ -1,38 +1,52 @@
 <?php
-/*
-*
-*/
+
+/**
+ *
+ *	Priv Code
+ * 
+ * @package	Priv Code
+ * @author	Supian M
+ * @copyright	Copyright (c) 2017, Priv Code Lab (http://www.priv-code.com/)
+ * @link	https://github.com/SupianID/Framework
+ * @since	Version 1.0.0
+ * @filesource
+ */
+
+$system = 'System';
+
+$application = 'Application';
+
+// The name of THIS file
 define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
 
-/*
-*
-*/
-define('DIR_ROOT', dirname(__FILE__) . DIRECTORY_SEPARATOR);
+// The name of system directory
+define('ROOT_DIR', dirname(__FILE__) . DIRECTORY_SEPARATOR);
 
-/*
-*
-*/
-if(is_dir(DIR_ROOT . 'public')){
-	define('DIR_PUBLIC', DIR_ROOT . 'public' . DIRECTORY_SEPARATOR);
-} else {
+// Is the system path correct?
+if(!is_dir(ROOT_DIR . $system)){
 	header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
 	echo 'Your public folder path does not appear to be set correctly. Please open the following file and correct this: '.SELF;
-	exit(3);
+	exit();
 }
 
-/*
-*
-*/
-
-if(is_dir(DIR_ROOT . 'system')){
-	define('DIR_SYSTEM', DIR_ROOT . 'system' . DIRECTORY_SEPARATOR);
-} else {
+// Is the system path correct?
+if(!is_dir(ROOT_DIR . $application)){
 	header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
 	echo 'Your public folder path does not appear to be set correctly. Please open the following file and correct this: '.SELF;
-	exit(3);
+	exit();
 }
 
+
+// The name of "system" directory
+define('SYS_DIR', ROOT_DIR . $system . DIRECTORY_SEPARATOR);
+
+define('APP_DIR', ROOT_DIR . $application . DIRECTORY_SEPARATOR);
+
+
 /*
-| Here we go
+|------------------------------------------------------
+|	LOAD THE CODE
+|------------------------------------------------------
 */
-require DIR_SYSTEM . 'core/PrivCode.php';
+
+require SYS_DIR . 'PrivCode.php';
