@@ -59,29 +59,29 @@ class Router extends \PrivCode\App\Config\Config
          *
          * @return	void
          */
-        if (!isset($this->segment[1]) or empty($this->segment[1])) {
+        if (!isset($this->segment[0]) or empty($this->segment[0])) {
             if (empty($this->getConfigItem('routes', 'controller'))) {
                 die('Unable to determine what should be displayed. A default route of controller has not been specified in the config file. Please configure this file ' . APP_DIR . 'Config/Config.php');
             }
 
-            $this->segment[1] = $this->getConfigItem('routes', 'controller');
+            $this->segment[0] = $this->getConfigItem('routes', 'controller');
         }
 
-        $this->class = ucfirst($this->segment[1]);
+        $this->class = ucfirst($this->segment[0]);
         eval('$this->controller = new \PrivCode\App\Controllers\\'.$this->class.";");
     }
 
     private function setMethod()
     {
-        if (!isset($this->segment[2]) or empty($this->segment[2])) {
+        if (!isset($this->segment[1]) or empty($this->segment[1])) {
             if (empty($this->getConfigItem('routes', 'method'))) {
                 die('Unable to determine what should be displayed. A default route of method has not been specified in the config file. Please configure this file ' . APP_DIR . 'Config/Config.php');
             }
 
-            $this->segment[2] = $this->getConfigItem('routes', 'method');
+            $this->segment[1] = $this->getConfigItem('routes', 'method');
         }
 
-        $this->method = $this->segment[2];
+        $this->method = $this->segment[1];
         
         if (!method_exists($this->controller, $this->method)) {
             die('Fatal Error : Uncaught Error: Call to undefined method \'' . $this->method . '\' in ' . APP_DIR . 'Controllers/' . $this->class . '.php');
@@ -90,7 +90,7 @@ class Router extends \PrivCode\App\Config\Config
 
     private function setVars()
     {
-        if (isset($this->segment[3])) {
+        if (isset($this->segment[2])) {
             $this->var = array_slice($this->segment, 3);
         }
     }

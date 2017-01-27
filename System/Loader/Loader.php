@@ -2,7 +2,7 @@
 
 defined('ROOT_DIR') or die('Forbidden');
 
-class Loader 
+class Loader
 {
     public function model($model, $name = false)
     {

@@ -33,29 +33,20 @@ class URI
      * @param	mixed		$no_result	What to return if the segment index is not found
      * @return	mixed
      */
+    
     public function segment($segment = null)
     {
-        if (isset($_SERVER['REQUEST_URI'])) {
-            $this->request = $_SERVER['REQUEST_URI'];
-            $this->filterUri($this->request);
-            $this->segment = explode(DIRECTORY_SEPARATOR, $this->request);
-            return isset($segment) ? $this->segment[$segment] : $this->segment;
+        $uri = str_replace($_SERVER['REQUEST_URI'], '', $_SERVER['SCRIPT_NAME']);
+        if ($uri == 'index.php') {
+            $uri = '';
+        } else {
+            $uri = str_replace($_SERVER['SCRIPT_NAME'], '', $_SERVER['REQUEST_URI']);
+            $uri = preg_replace("|/*(.+?)/*$|", "\\1", str_replace("\\", "/", $uri));
+            $uri = trim($uri, '/');
         }
-    }
+        $this->segment = preg_split('[\\/]', $uri, 0, PREG_SPLIT_NO_EMPTY);
 
-    /**
-     * Filter URI
-     *
-     * Filters segments for malicious characters.
-     *
-     * @param   string  $str
-     * @return  void
-     */
-    public function filterUri($str)
-    {
-        if (!empty($str) && stripos('~`$%^*(){}[]|:;"\'<,.>', urldecode($str))){
-            show_error('The URI you submitted has disallowed characters.');
-        }
+        return isset($segment) ? $this->segment[$segment] : $this->segment;
     }
 }
 

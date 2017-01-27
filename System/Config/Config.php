@@ -68,7 +68,6 @@ class Config
         $this->config[$key] = $value;
         return $this->config;
     }
-    
 }
 
 /* End of file Config.php */

@@ -11,7 +11,7 @@ class Home extends BaseController
         $this->view('test_view', $this->data);
     }
 
-    public function supian($a,$b)
+    public function supian($a, $b)
     {
         echo 'Supian => '.$a.' => '.$b;
     }
