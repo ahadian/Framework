@@ -60,3 +60,7 @@ p {
 	</div>
 </body>
 </html>
+
+<?php 
+/* End of file error_general.php */
+/* Location: ./System/Templates/Errors/error_general.php */

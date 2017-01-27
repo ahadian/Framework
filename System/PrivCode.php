@@ -2,21 +2,76 @@
 
 defined('ROOT_DIR') or die('Forbidden');
 
+/**
+ * System Initialization File
+ *
+ * Loads the base classes and executes the request.
+ *
+ * @package		Priv Code
+ * @subpackage	Priv Code
+ * @category	Front Controller
+ * @author		Supian M
+ * @link		http://www.priv-code.com
+ */
+
+/**
+ * Priv Code Version
+ *
+ * @var	string
+ *
+ */
+const PRIVCODE_VERSION = '1.6.0';
+
+/*
+ * ------------------------------------------------------
+ *  Load the global functions
+ * ------------------------------------------------------
+ */
 require SYS_DIR . 'Common.php';
 
+/*
+ * ------------------------------------------------------
+ *  Load the class autoloader
+ * ------------------------------------------------------
+ */
 require SYS_DIR . 'Loader/Autoloader.php';
 
-// instantiate the loader
-$loader = new \System\Loader\Autoloader;
+/*
+ * ------------------------------------------------------
+ *  Instantiate the autoloader class and set the loader
+ * ------------------------------------------------------
+ */
+$autoloader = new \System\Loader\Autoloader;
 
-// register the autoloader
-$loader->register();
+/*
+ *------------------------------------------------------
+ *	Register the autoloader
+ *------------------------------------------------------
+ */
+$autoloader->register();
 
-// register the base directories for the namespace prefix
+/*
+ *------------------------------------------------------
+ *	Set the base directories for the namespace prefix
+ *------------------------------------------------------
+ */
+$autoloader->addNamespace(array(
+        'PrivCode\\' => $system,
+        'PrivCode\\App\\' => $application
+    ));
 
-$loader->addNamespace(array(
-		'PrivCode\\' => 'System',
-		'PrivCode\\App\\' => 'Application'
-	));
+/*
+ * ------------------------------------------------------
+ *  Instantiate the routing class and set the routing
+ * ------------------------------------------------------
+ */
 $router = new PrivCode\Router\Router;
+
+/* ------------------------------------------------------
+ *  Send the final rendered output to the browser
+ * ------------------------------------------------------
+ */
 $router->init();
+
+/* End of file PrivCode.php */
+/* Location: ./System/PrivCode.php */

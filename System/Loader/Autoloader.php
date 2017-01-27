@@ -2,7 +2,8 @@
 
 defined('ROOT_DIR') or die('Forbidden');
 
-class Autoloader {
+class Autoloader
+{
     /**
      * An associative array where the key is a namespace prefix and the value
      * is an array of base directories for classes in that namespace.
@@ -16,7 +17,8 @@ class Autoloader {
      *
      * @return void
      */
-    public function register(){
+    public function register()
+    {
         spl_autoload_register(array($this, 'loadClass'));
     }
 
@@ -31,9 +33,9 @@ class Autoloader {
      * than last.
      * @return void
      */
-    public function addNamespace($data, $prepend = false){
-        
-        foreach($data as $prefix => $base_dir){
+    public function addNamespace($data, $prepend = false)
+    {
+        foreach ($data as $prefix => $base_dir) {
             // normalize namespace prefix
             $prefix = trim($prefix, '\\') . '\\';
 
@@ -42,7 +44,7 @@ class Autoloader {
             
             // initialize the namespace prefix array
             if (isset($this->prefixes[$prefix]) === false) {
-               $this->prefixes[$prefix] = array();
+                $this->prefixes[$prefix] = array();
             }
 
             // retain the base directory for the namespace prefix
@@ -51,10 +53,7 @@ class Autoloader {
             } else {
                 array_push($this->prefixes[$prefix], $base_dir);
             }
-
         }
-
-       
     }
 
     /**
@@ -64,7 +63,8 @@ class Autoloader {
      * @return mixed The mapped file name on success, or boolean false on
      * failure.
      */
-    public function loadClass($class){
+    public function loadClass($class)
+    {
         // the current namespace prefix
         $prefix = $class;
 
@@ -101,7 +101,8 @@ class Autoloader {
      * @return mixed Boolean false if no mapped file can be loaded, or the
      * name of the mapped file that was loaded.
      */
-    protected function loadMappedFile($prefix, $relative_class){
+    protected function loadMappedFile($prefix, $relative_class)
+    {
         // are there any base directories for this namespace prefix?
         if (isset($this->prefixes[$prefix]) === false) {
             return false;
@@ -134,7 +135,8 @@ class Autoloader {
      * @param string $file The file to require.
      * @return bool True if the file exists, false if not.
      */
-    protected function requireFile($file){
+    protected function requireFile($file)
+    {
         if (file_exists($file)) {
             require $file;
             return true;
@@ -143,3 +145,5 @@ class Autoloader {
     }
 }
 
+/* End of file Autoloader.php */
+/* Location: ./System/Loader/Autoloader.php */

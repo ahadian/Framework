@@ -18,14 +18,8 @@
 		</thead>
 		<tbody>
 			<?php
-				foreach ($db as $key) {
-					echo '<tr>';
-					echo "<td>$key->name</td>";
-					echo "<td>$key->username</td>";
-					echo "<td>$key->email</td>";
-					echo "<td>$key->date_registered</td>";	
-					echo "</tr>";
-			 	}?>
+                echo $db->name;
+            ?>
 
 		</tbody>
 	</table>
